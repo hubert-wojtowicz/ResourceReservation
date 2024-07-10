@@ -55,3 +55,5 @@ Add comments to the code to explain decisions, constructs, etc. wherever you thi
 - `dotnet ef --startup-project ..\ReservationApi\ReservationApi.csproj migrations add Init`
 
 - `dotnet ef --startup-project ..\ReservationApi\ReservationApi.csproj database update --project .\ReservationApi.Infrastructure.csproj`
+
+- `dotnet ef --startup-project ..\ReservationApi\ReservationApi.csproj migrations remove`

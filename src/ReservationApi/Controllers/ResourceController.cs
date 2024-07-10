@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using ReservationApi.ApiContract;
+using ReservationApi.Application.Repository;
 
 namespace ReservationApi.Controllers;
 
@@ -15,7 +16,8 @@ public class ResourceController : ControllerBase
     /// <summary>
     /// Initialize instance of object.
     /// </summary>
-    public ResourceController(ILogger<ResourceController> logger)
+    public ResourceController(
+        ILogger<ResourceController> logger)
     {
         _logger = logger;
     }

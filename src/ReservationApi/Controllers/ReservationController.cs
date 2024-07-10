@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using ReservationApi.ApiContract;
-using ReservationApi.Domain;
+using ReservationApi.Infrastructure;
 
 namespace ReservationApi.Controllers;
 

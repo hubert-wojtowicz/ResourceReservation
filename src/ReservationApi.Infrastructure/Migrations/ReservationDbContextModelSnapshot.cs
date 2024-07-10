@@ -35,7 +35,7 @@ namespace ReservationApi.Infrastructure.Migrations
 
                     b.HasKey("ReservationId");
 
-                    b.ToTable("Reservations");
+                    b.ToTable("Reservations", (string)null);
                 });
 
             modelBuilder.Entity("ReservationApi.Infrastructure.Resource", b =>
@@ -50,7 +50,7 @@ namespace ReservationApi.Infrastructure.Migrations
 
                     b.HasKey("ResourceId");
 
-                    b.ToTable("Resources");
+                    b.ToTable("Resources", (string)null);
                 });
 
             modelBuilder.Entity("ReservationApi.Infrastructure.Reservation", b =>

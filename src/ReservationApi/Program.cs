@@ -22,6 +22,7 @@ builder.Services.AddDbContext<ReservationDbContext>((cfg) =>
     cfg.UseSqlServer(builder.Configuration.GetConnectionString("ReservationDbContext"));
 });
 
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

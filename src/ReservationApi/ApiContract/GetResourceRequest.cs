@@ -1,9 +1,11 @@
-﻿namespace ReservationApi.ApiContract
+﻿using ReservationApi.Infrastructure;
+
+namespace ReservationApi.ApiContract
 {
     /// <summary>
     /// <see cref="GetResourceRequest"/> contract model.
     /// </summary>
-    /// <seealso cref="ReservationApi.ApiContract.IPaginable" />
+    /// <seealso cref="Infrastructure.IPaginable" />
     public class GetResourceRequest : IPaginable
     {
         /// <inheritdoc/>

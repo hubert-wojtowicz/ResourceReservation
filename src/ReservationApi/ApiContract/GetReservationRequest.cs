@@ -1,4 +1,6 @@
-﻿namespace ReservationApi.ApiContract
+﻿using ReservationApi.Infrastructure;
+
+namespace ReservationApi.ApiContract
 {
     /// <summary>
     /// <see cref="GetReservationRequest"/> contract model.

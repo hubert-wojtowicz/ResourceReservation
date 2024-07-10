@@ -1,4 +1,4 @@
-﻿namespace ReservationApi.ApiContract
+﻿namespace ReservationApi.Infrastructure
 {
     /// <summary>
     /// Define pagination interface.
