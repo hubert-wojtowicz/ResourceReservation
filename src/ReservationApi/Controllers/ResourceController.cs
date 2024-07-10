@@ -26,9 +26,13 @@ public class ResourceController : ControllerBase
     /// Get list of resources.
     /// </summary>
     [HttpGet]
-    public Task<IEnumerable<object>> ListActiveReservations([FromQuery]GetResourceRequest request)
+    public Task<IEnumerable<CreateReservationRequest>> Get([FromQuery]GetResourceRequest request)
     {
-        return Task.FromResult<IEnumerable<object>>(null);
+        return Task.FromResult<IEnumerable<CreateReservationRequest>>(new[]{new CreateReservationRequest
+        {
+            ReservingPartyId = Guid.NewGuid(),
+            ResourceId = Guid.NewGuid()
+        } });
     }
 
 
