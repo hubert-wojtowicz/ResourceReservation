@@ -21,6 +21,12 @@ Microservice for Resource exclusive reservation.
 4. `Resource` Tag consist of 2 values delimited by `=` sign.
 
 
+# App startup 
+
+Please run migrations (EF Code First) against Sql Server Express database. Connection string is defined in `appsettings.json`.
+$ cd src\ReservationApi.Infrastructure
+$ dotnet ef --startup-project ..\ReservationApi\ReservationApi.csproj database update --project .\ReservationApi.Infrastructure.csproj
+
 # Task
 
 Create an application (in .NET 6) with a REST/json API that retrieves data from at least 2 sources (repositories), based on the data provided in the request, e.g. by using query parameters like ?source=A,B,D or based on the body of the request.
@@ -44,4 +50,8 @@ Add comments to the code to explain decisions, constructs, etc. wherever you thi
 
 # Used CLI commands
 
-`dotnet new webapi --name ReservationApi --framework net6.0 --auth none -minimal`
+- `dotnet new webapi --name ReservationApi --framework net6.0 --auth none -minimal`
+
+- `dotnet ef --startup-project ..\ReservationApi\ReservationApi.csproj migrations add Init`
+
+- `dotnet ef --startup-project ..\ReservationApi\ReservationApi.csproj database update --project .\ReservationApi.Infrastructure.csproj`

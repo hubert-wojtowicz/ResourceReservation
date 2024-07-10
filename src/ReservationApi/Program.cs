@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using ReservationApi.Infrastructure;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +15,11 @@ builder.Services.AddSwaggerGen(options =>
     var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
     var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
     options.IncludeXmlComments(xmlPath);
+});
+
+builder.Services.AddDbContext<ReservationDbContext>((cfg) =>
+{
+    cfg.UseSqlServer(builder.Configuration.GetConnectionString("ReservationDbContext"));
 });
 
 var app = builder.Build();
