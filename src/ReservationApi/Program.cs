@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
+using ReservationApi.Application.Repository;
 using ReservationApi.Infrastructure;
+using ReservationApi.Infrastructure.Entities;
 using System.Reflection;
 
 namespace ReservationApi
@@ -27,6 +29,8 @@ namespace ReservationApi
                 cfg.UseSqlServer(builder.Configuration.GetConnectionString("ReservationDbContext"));
             });
 
+            builder.Services.AddScoped<IRepository<Resource>, ResourceRepository>();
+            builder.Services.AddScoped<IRepository<Reservation>, ReservationRepository>();
 
             var app = builder.Build();
 

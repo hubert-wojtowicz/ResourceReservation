@@ -1,4 +1,5 @@
-﻿using ReservationApi.Validations;
+﻿using Microsoft.AspNetCore.Mvc;
+using ReservationApi.Validations;
 
 namespace ReservationApi.ApiContract
 {
@@ -11,6 +12,7 @@ namespace ReservationApi.ApiContract
         /// Unique resource identifier.
         /// </summary>
         [NotDefaultGuid]
+        [FromRoute(Name = "id")]
         public Guid ResourceId { get; set; }
     }
 }

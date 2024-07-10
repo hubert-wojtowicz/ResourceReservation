@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using ReservationApi.ApiContract;
 using ReservationApi.Application.Repository;
 using ReservationApi.Infrastructure.Entities;
+using ReservationApi.Validations;
 
 namespace ReservationApi.Controllers;
 
@@ -64,15 +65,15 @@ public class ResourceController : ControllerBase
     /// <summary>
     /// Removes resource.
     /// </summary>
-    [HttpDelete]
-    public async Task<ActionResult> Delete([FromBody] DeleteResourceRequest request)
+    [HttpDelete("{resourceId}")]
+    public async Task<ActionResult> Delete([NotDefaultGuid] Guid resourceId)
     {
         if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
         }
 
-        var resource = await _repository.Get(request.ResourceId);
+        var resource = await _repository.Get(resourceId);
 
         if (resource == null)
         { 
