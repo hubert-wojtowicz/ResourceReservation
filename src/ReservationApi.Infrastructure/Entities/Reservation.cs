@@ -1,4 +1,6 @@
-﻿namespace ReservationApi.Infrastructure
+﻿using ReservationApi.Infrastructure.Entities;
+
+namespace ReservationApi.Infrastructure
 {
     public class Reservation
     {

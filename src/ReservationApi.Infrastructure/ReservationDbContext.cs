@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ReservationApi.Infrastructure.Entities;
 
 namespace ReservationApi.Infrastructure
 {

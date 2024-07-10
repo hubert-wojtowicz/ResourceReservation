@@ -33,5 +33,11 @@ namespace ReservationApi.Application.Repository
                 .Skip(paginationParams.Skip)
                 .ToListAsync();
         }
+
+        public async Task<Reservation?> Get(Guid id)
+        {
+            return await Colection.AsNoTracking()
+                .FirstOrDefaultAsync(x => x.ReservationId == id);
+        }
     }
 }

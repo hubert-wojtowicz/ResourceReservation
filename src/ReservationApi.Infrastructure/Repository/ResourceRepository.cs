@@ -1,9 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ReservationApi.Infrastructure;
+using ReservationApi.Infrastructure.Entities;
 
 namespace ReservationApi.Application.Repository
 {
-    public class ResourceRepository
+    public class ResourceRepository : IRepository<Resource>
     {
         private readonly ReservationDbContext _ctx;
         private DbSet<Resource> Colection => _ctx.Set<Resource>();
@@ -32,6 +33,12 @@ namespace ReservationApi.Application.Repository
                 .Take(paginationParams.Take)
                 .Skip(paginationParams.Skip)
                 .ToListAsync();
+        }
+
+        public async Task<Resource?> Get(Guid id)
+        {
+            return await Colection.AsNoTracking()
+                .FirstOrDefaultAsync(x => x.ResourceId == id);
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace ReservationApi.Infrastructure
+﻿namespace ReservationApi.Infrastructure.Entities
 {
     public class Resource
     {

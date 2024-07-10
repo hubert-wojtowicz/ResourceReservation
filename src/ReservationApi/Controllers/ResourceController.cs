@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ReservationApi.ApiContract;
 using ReservationApi.Application.Repository;
+using ReservationApi.Infrastructure.Entities;
 
 namespace ReservationApi.Controllers;
 
@@ -12,45 +13,74 @@ namespace ReservationApi.Controllers;
 public class ResourceController : ControllerBase
 {
     private ILogger<ResourceController> _logger;
+    private readonly IRepository<Resource> _repository;
 
     /// <summary>
     /// Initialize instance of object.
     /// </summary>
     public ResourceController(
-        ILogger<ResourceController> logger)
+        ILogger<ResourceController> logger, 
+        IRepository<ReservationApi.Infrastructure.Entities.Resource> repository)
     {
         _logger = logger;
+        _repository = repository;
     }
 
     /// <summary>
     /// Get list of resources.
     /// </summary>
     [HttpGet]
-    public Task<IEnumerable<CreateReservationRequest>> Get([FromQuery]GetResourceRequest request)
+    public async Task<ActionResult<IEnumerable<Resource>>> Get([FromQuery]GetResourceRequest request)
     {
-        return Task.FromResult<IEnumerable<CreateReservationRequest>>(new[]{new CreateReservationRequest
+        if (!ModelState.IsValid)
         {
-            ReservingPartyId = Guid.NewGuid(),
-            ResourceId = Guid.NewGuid()
-        } });
+            return BadRequest(ModelState);
+        }
+
+        return Ok(await _repository.GetAll(request));
     }
 
 
     /// <summary>
-    /// Creates resourcw.
+    /// Creates resource.
     /// </summary>
     [HttpPost]
-    public Task Create([FromBody]CreateResourceRequest request)
+    public async Task<ActionResult> Create([FromBody]CreateResourceRequest request)
     {
-        return Task.CompletedTask;
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        await _repository.Add(new Resource
+        {
+            Tags = request.Tags,
+            ResourceId = request.ResourceId
+        });
+
+        return Ok();
     }
 
     /// <summary>
     /// Removes resource.
     /// </summary>
     [HttpDelete]
-    public Task Delete([FromBody] DeleteResourceRequest request)
+    public async Task<ActionResult> Delete([FromBody] DeleteResourceRequest request)
     {
-        return Task.CompletedTask;
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        var resource = await _repository.Get(request.ResourceId);
+
+        if (resource == null)
+        { 
+            return NotFound();
+        }
+
+        await _repository.Delete(resource);
+
+        return Ok();
     }
 }
