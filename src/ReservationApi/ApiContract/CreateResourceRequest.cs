@@ -1,4 +1,7 @@
-﻿namespace ReservationApi.ApiContract
+﻿using ReservationApi.Validations;
+using System.ComponentModel.DataAnnotations;
+
+namespace ReservationApi.ApiContract
 {
     /// <summary>
     /// <see cref="CreateResourceRequest"/> contract model.
@@ -8,6 +11,8 @@
         /// <summary>
         /// Resource unique identifier.
         /// </summary>
+        [Required]
+        [NotDefaultGuid]
         public Guid ResourceId { get; set; }
 
         /// <summary>
