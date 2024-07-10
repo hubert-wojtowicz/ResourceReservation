@@ -2,16 +2,24 @@
 Microservice for Resource exclusive reservation.
 
 ## Definitons
-Party - any identity.
-Resource - it can be any item that may be assigned to one and only one Party at the same time.
-Reservation - it does define bond between Party and Resource.
+`Party` - any identity.
+`Resource` - it can be any item that may be assigned to one and only one Party at the same time.
+`Reservation` - it does define bond between Party and Resource.
 
 ## Main bussines question this api answers
-1. Is Resource availiable for Party exclusive reservation?
-2. What reservation does Party posses?
+1. Is `Resource` availiable for `Party` exclusive reservation?
+2. What reservation does `Party` posses?
 
 ## What is beyound the scope of this api
 1. Any question in relation to the time of reservation are not in responsibility of this api. This should be delegated to seareate service.
+2. Any questions about reservation history are beyond scope of this application.
+
+## Requirements
+1. Can not delete Resource that is under reservation.
+2. Can not reserve the samme Resource twice.
+3. Any Get operation returns paginated result.
+4. `Resource` Tag consist of 2 values delimited by `=` sign.
+
 
 # Task
 

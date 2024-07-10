@@ -4,7 +4,7 @@ using ReservationApi.ApiContract;
 namespace ReservationApi.Controllers;
 
 /// <summary>
-/// Manages exclusive reservation over information defined with <seealso cref="ResourceController"/>.
+/// REST controller over Resource.
 /// </summary>
 [ApiController]
 [Route("[controller]")]
@@ -12,40 +12,38 @@ public class ResourceController : ControllerBase
 {
     private ILogger<ResourceController> _logger;
 
+    /// <summary>
+    /// Initialize instance of object.
+    /// </summary>
     public ResourceController(ILogger<ResourceController> logger)
     {
         _logger = logger;
     }
 
     /// <summary>
-    /// Get list active resource reservations.
+    /// Get list of resources.
     /// </summary>
-    /// <returns>Active resource reservations falling into filter category.</returns>
     [HttpGet]
-    public Task<IEnumerable<object>> ListActiveReservations()
+    public Task<IEnumerable<object>> ListActiveReservations([FromQuery]GetResourceRequest request)
     {
         return Task.FromResult<IEnumerable<object>>(null);
     }
 
 
     /// <summary>
-    /// Creates reservation of resource.
+    /// Creates resourcw.
     /// </summary>
-    /// <param name="request">Definition what have to be reserved.</param>
-    /// <returns>Information about status of operation.</returns>
     [HttpPost]
-    public Task Create(CreateReservationRequest request)
+    public Task Create([FromBody]CreateResourceRequest request)
     {
         return Task.CompletedTask;
     }
 
     /// <summary>
-    /// Removes reservation of resource.
+    /// Removes resource.
     /// </summary>
-    /// <param name="request">Definition what have to be unreserved.</param>
-    /// <returns>Information about status of operation.</returns>
     [HttpDelete]
-    public Task Delete([FromBody] DeleteReservationRequest request)
+    public Task Delete([FromBody] DeleteResourceRequest request)
     {
         return Task.CompletedTask;
     }
