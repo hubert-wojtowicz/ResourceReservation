@@ -3,11 +3,11 @@ using Xunit;
 
 namespace ReservationApi.Tests
 {
-    public class ResourceControllerIntegrationTest : IClassFixture<WebApplicationFactory<Program>>
+    public class ResourceControllerIntegrationTest : IClassFixture<CustomWebApplicationFactory<Program>>
     {
         private readonly HttpClient _client;
 
-        public ResourceControllerIntegrationTest(WebApplicationFactory<Program> factory)
+        public ResourceControllerIntegrationTest(CustomWebApplicationFactory<Program> factory)
         {
             _client = factory.CreateClient();
         }
