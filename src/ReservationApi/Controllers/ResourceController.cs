@@ -30,6 +30,7 @@ public class ResourceController : ControllerBase
     /// <summary>
     /// Get list of resources.
     /// </summary>
+    [ResponseCache(Duration = 10)] // just as example, another option is to inject IMemoryCache via constructor or configure Redis or other cache pervider behind IDistributedCache
     [HttpGet]
     public async Task<ActionResult<IEnumerable<ResourceDbEntity>>> Get([FromQuery]GetResourceRequest request)
     {

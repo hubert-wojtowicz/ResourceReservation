@@ -33,6 +33,7 @@ namespace ReservationApi
             builder.Services.AddScoped<IRepository<ResourceDbEntity>, ResourceRepository>();
             builder.Services.AddScoped<IRepository<ReservationDbEntity>, ReservationRepository>();
             builder.Services.AddScoped<IReservationApplicationService, ReservationApplicationService>();
+            builder.Services.AddResponseCaching();
 
             var app = builder.Build();
 
@@ -46,6 +47,8 @@ namespace ReservationApi
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
+
+            app.UseResponseCaching();
 
             app.MapControllers();
 
