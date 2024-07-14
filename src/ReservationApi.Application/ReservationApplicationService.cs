@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using ReservationApi.Application.Models;
 using ReservationApi.Application.Repository;
 using ReservationApi.Infrastructure;
@@ -8,13 +9,16 @@ namespace ReservationApi.Application
 {
     public class ReservationApplicationService : IReservationApplicationService
     {
+        private readonly ILogger<ReservationApplicationService> _logger;
         private readonly IRepository<ReservationDbEntity> _reaservationRepository;
         private readonly IRepository<ResourceDbEntity> _resourceRepository;
 
         public ReservationApplicationService(
+            ILogger<ReservationApplicationService> logger,
             IRepository<ReservationDbEntity> reaservationRepository,
             IRepository<ResourceDbEntity> resourceRepository)
         {
+            _logger = logger;
             _reaservationRepository = reaservationRepository;
             _resourceRepository = resourceRepository;
         }
@@ -44,8 +48,10 @@ namespace ReservationApi.Application
                 };
                 await _reaservationRepository.Add(entity);
             }
-            catch (DbUpdateException)
+            catch (DbUpdateException ex)
             {
+                _logger.LogError(ex, ex.Message); // Just to know reason
+
                 return new ErrorModel($"Reservation for {nameof(createReservationDto.ResourceId)} already exist.", new List<KeyValuePair<string, string>> 
                 { 
                     KeyValuePair.Create(nameof(createReservationDto.ResourceId), createReservationDto.ResourceId.ToString()) 
