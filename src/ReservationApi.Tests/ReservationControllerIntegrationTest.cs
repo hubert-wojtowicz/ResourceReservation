@@ -1,5 +1,5 @@
 using ReservationApi.ApiContract;
-using ReservationApi.Application;
+using ReservationApi.Application.Models;
 using System.Net.Http.Json;
 
 namespace ReservationApi.Tests

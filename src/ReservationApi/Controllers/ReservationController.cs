@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ReservationApi.ApiContract;
 using ReservationApi.Application;
+using ReservationApi.Application.Models;
 using ReservationApi.Application.Repository;
 using ReservationApi.Infrastructure;
 using ReservationApi.Validations;
@@ -63,7 +64,7 @@ public class ReservationController : ControllerBase
             return BadRequest("All identifiers must be provided and non default value.");
         }
 
-        var createResult = await _reservationApplicationService.CreateResevation(new CreateReservationDto
+        var createResult = await _reservationApplicationService.CreateResevation(new CreateReservationDto(default, default, default)
         {
             ReservationId = request.ReservationId,
             ReservingPartyId = request.ReservingPartyId,
