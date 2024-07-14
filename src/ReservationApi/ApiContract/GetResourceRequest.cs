@@ -9,10 +9,10 @@ namespace ReservationApi.ApiContract
     public class GetResourceRequest : IPaginable
     {
         /// <inheritdoc/>
-        public int Take { get; set; }
+        public int Take { get; set; } = 10;
 
         /// <inheritdoc/>
-        public int Skip { get; set; }
+        public int Skip { get; set; } = 0;
 
         /// <summary>
         /// Gets or sets the tags.
