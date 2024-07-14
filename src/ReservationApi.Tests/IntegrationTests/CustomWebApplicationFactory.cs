@@ -5,13 +5,13 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using ReservationApi.Infrastructure;
 
-namespace ReservationApi.Tests
+namespace ReservationApi.Tests.IntegrationTests
 {
     /// <summary>
     /// This is implementation on Host factory, changing data source from regular database to EF in-memory data pevider.
     /// </summary>
     /// <typeparam name="TStartup">The type of the startup.</typeparam>
-    /// <seealso cref="Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactory&lt;TStartup&gt;" />
+    /// <seealso cref="WebApplicationFactory&lt;TStartup&gt;" />
     public class CustomWebApplicationFactory<TStartup> : WebApplicationFactory<TStartup> where TStartup : class
     {
         protected override IHost CreateHost(IHostBuilder builder)

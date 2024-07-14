@@ -2,7 +2,7 @@ using ReservationApi.ApiContract;
 using ReservationApi.Infrastructure.Entities;
 using System.Net.Http.Json;
 
-namespace ReservationApi.Tests
+namespace ReservationApi.Tests.IntegrationTests
 {
     public class ResourceControllerIntegrationTest : IClassFixture<CustomWebApplicationFactory<Program>>
     {
