@@ -3,29 +3,29 @@ using ReservationApi.Infrastructure;
 
 namespace ReservationApi.Application.Repository
 {
-    public class ReservationRepository : IRepository<Reservation>
+    public class ReservationRepository : IRepository<ReservationDbEntity>
     {
         private readonly ReservationDbContext _ctx;
-        private DbSet<Reservation> Colection => _ctx.Set<Reservation>();
+        private DbSet<ReservationDbEntity> Colection => _ctx.Set<ReservationDbEntity>();
 
         public ReservationRepository(ReservationDbContext ctx)
         {
             _ctx = ctx;
         }
 
-        public async Task Add(Reservation entity)
+        public async Task Add(ReservationDbEntity entity)
         {
             await Colection.AddAsync(entity);
             await _ctx.SaveChangesAsync();
         }
 
-        public async Task Delete(Reservation entity)
+        public async Task Delete(ReservationDbEntity entity)
         {
-            _ctx.Set<Reservation>().Remove(entity);
+            _ctx.Set<ReservationDbEntity>().Remove(entity);
             await _ctx.SaveChangesAsync();
         }
 
-        public async Task<ICollection<Reservation>> GetAll(IPaginable paginationParams)
+        public async Task<ICollection<ReservationDbEntity>> GetAll(IPaginable paginationParams)
         {
             return await Colection.AsNoTracking()
                 .OrderBy(x => x.ReservationId)
@@ -34,7 +34,7 @@ namespace ReservationApi.Application.Repository
                 .ToListAsync();
         }
 
-        public async Task<Reservation?> Get(Guid id)
+        public async Task<ReservationDbEntity?> Get(Guid id)
         {
             return await Colection.AsNoTracking()
                 .FirstOrDefaultAsync(x => x.ReservationId == id);

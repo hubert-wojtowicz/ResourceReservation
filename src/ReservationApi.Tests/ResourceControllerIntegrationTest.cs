@@ -29,17 +29,17 @@ namespace ReservationApi.Tests
             await CleanResoure(id);
             try
             {
-                var createResource = new CreateResourceRequest
+                var createResponse = await _client.PostAsJsonAsync("/Resource", new CreateResourceRequest
                 {
                     ResourceId = id,
                     Tags = new List<string> { "Param1=A;Param2=B" }
-                };
-                var createResponse = await _client.PostAsJsonAsync("/Resource", createResource);
+                });
+
                 createResponse.EnsureSuccessStatusCode();
 
                 var getResourcee = await _client.GetAsync("/Resource?ResourceId=09df374a-61c8-41d8-abcb-0b6475cedc99");
 
-                var body = await getResourcee.Content.ReadFromJsonAsync<IEnumerable<Resource>>() ?? Array.Empty<Resource>();
+                var body = await getResourcee.Content.ReadFromJsonAsync<IEnumerable<ResourceDbEntity>>() ?? Array.Empty<ResourceDbEntity>();
 
                 Assert.Contains(body, x => x.ResourceId == id);
             }

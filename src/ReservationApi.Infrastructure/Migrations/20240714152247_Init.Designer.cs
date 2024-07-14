@@ -12,7 +12,7 @@ using ReservationApi.Infrastructure;
 namespace ReservationApi.Infrastructure.Migrations
 {
     [DbContext(typeof(ReservationDbContext))]
-    [Migration("20240710162057_Init")]
+    [Migration("20240714152247_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,23 +24,7 @@ namespace ReservationApi.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("ReservationApi.Infrastructure.Reservation", b =>
-                {
-                    b.Property<Guid>("ReservationId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("ReservedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("ReservingPartyId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("ReservationId");
-
-                    b.ToTable("Reservations");
-                });
-
-            modelBuilder.Entity("ReservationApi.Infrastructure.Resource", b =>
+            modelBuilder.Entity("ReservationApi.Infrastructure.Entities.ResourceDbEntity", b =>
                 {
                     b.Property<Guid>("ResourceId")
                         .ValueGeneratedOnAdd()
@@ -52,21 +36,44 @@ namespace ReservationApi.Infrastructure.Migrations
 
                     b.HasKey("ResourceId");
 
-                    b.ToTable("Resources");
+                    b.ToTable("Resources", (string)null);
                 });
 
-            modelBuilder.Entity("ReservationApi.Infrastructure.Reservation", b =>
+            modelBuilder.Entity("ReservationApi.Infrastructure.ReservationDbEntity", b =>
                 {
-                    b.HasOne("ReservationApi.Infrastructure.Resource", "Resource")
+                    b.Property<Guid>("ReservationId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("ReservedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("ReservingPartyId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("ResourceId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("ReservationId");
+
+                    b.HasIndex("ResourceId")
+                        .IsUnique()
+                        .HasFilter("[ResourceId] IS NOT NULL");
+
+                    b.ToTable("Reservations", (string)null);
+                });
+
+            modelBuilder.Entity("ReservationApi.Infrastructure.ReservationDbEntity", b =>
+                {
+                    b.HasOne("ReservationApi.Infrastructure.Entities.ResourceDbEntity", "Resource")
                         .WithOne("Reservation")
-                        .HasForeignKey("ReservationApi.Infrastructure.Reservation", "ReservationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ReservationApi.Infrastructure.ReservationDbEntity", "ResourceId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Resource");
                 });
 
-            modelBuilder.Entity("ReservationApi.Infrastructure.Resource", b =>
+            modelBuilder.Entity("ReservationApi.Infrastructure.Entities.ResourceDbEntity", b =>
                 {
                     b.Navigation("Reservation");
                 });

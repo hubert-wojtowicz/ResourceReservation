@@ -1,4 +1,6 @@
-﻿using ReservationApi.Infrastructure;
+﻿using Microsoft.AspNetCore.Mvc;
+using ReservationApi.Infrastructure;
+using System.Runtime.InteropServices;
 
 namespace ReservationApi.ApiContract
 {

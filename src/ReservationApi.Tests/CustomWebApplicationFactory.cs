@@ -29,9 +29,14 @@ namespace ReservationApi.Tests
                 }
 
                 // Add ApplicationDbContext using an in-memory database for testing.
+                //services.AddDbContext<ReservationDbContext>(options =>
+                //{
+                //    options.UseInMemoryDatabase("InMemoryDbForTesting");
+                //});
+
                 services.AddDbContext<ReservationDbContext>(options =>
                 {
-                    options.UseInMemoryDatabase("InMemoryDbForTesting");
+                    options.UseSqlServer("Server=(localdb)\\MSSQLLocalDB; Database=ReservationDbTests; Integrated Security=True;");
                 });
 
                 // Build the service provider.
@@ -45,7 +50,8 @@ namespace ReservationApi.Tests
                     var logger = scopedServices
                         .GetRequiredService<ILogger<CustomWebApplicationFactory<TStartup>>>();
 
-                    // Ensure the database is created.
+                    // Ensure feresh database is created.
+                    db.Database.EnsureDeleted();
                     db.Database.EnsureCreated();
                 }
             });

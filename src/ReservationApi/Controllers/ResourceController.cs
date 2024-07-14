@@ -14,14 +14,14 @@ namespace ReservationApi.Controllers;
 public class ResourceController : ControllerBase
 {
     private ILogger<ResourceController> _logger;
-    private readonly IRepository<Resource> _repository;
+    private readonly IRepository<ResourceDbEntity> _repository;
 
     /// <summary>
     /// Initialize instance of object.
     /// </summary>
     public ResourceController(
         ILogger<ResourceController> logger, 
-        IRepository<ReservationApi.Infrastructure.Entities.Resource> repository)
+        IRepository<ReservationApi.Infrastructure.Entities.ResourceDbEntity> repository)
     {
         _logger = logger;
         _repository = repository;
@@ -31,7 +31,7 @@ public class ResourceController : ControllerBase
     /// Get list of resources.
     /// </summary>
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Resource>>> Get([FromQuery]GetResourceRequest request)
+    public async Task<ActionResult<IEnumerable<ResourceDbEntity>>> Get([FromQuery]GetResourceRequest request)
     {
         if (!ModelState.IsValid)
         {
@@ -40,7 +40,6 @@ public class ResourceController : ControllerBase
 
         return Ok(await _repository.GetAll(request));
     }
-
 
     /// <summary>
     /// Creates resource.
@@ -53,7 +52,7 @@ public class ResourceController : ControllerBase
             return BadRequest(ModelState);
         }
 
-        await _repository.Add(new Resource
+        await _repository.Add(new ResourceDbEntity
         {
             Tags = request.Tags,
             ResourceId = request.ResourceId
@@ -81,7 +80,6 @@ public class ResourceController : ControllerBase
         }
 
         await _repository.Delete(resource);
-
         return Ok();
     }
 }

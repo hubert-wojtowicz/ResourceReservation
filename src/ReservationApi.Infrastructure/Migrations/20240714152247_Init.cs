@@ -27,18 +27,26 @@ namespace ReservationApi.Infrastructure.Migrations
                 {
                     ReservationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ReservingPartyId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ReservedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    ReservedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ResourceId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Reservations", x => x.ReservationId);
                     table.ForeignKey(
-                        name: "FK_Reservations_Resources_ReservationId",
-                        column: x => x.ReservationId,
+                        name: "FK_Reservations_Resources_ResourceId",
+                        column: x => x.ResourceId,
                         principalTable: "Resources",
                         principalColumn: "ResourceId",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reservations_ResourceId",
+                table: "Reservations",
+                column: "ResourceId",
+                unique: true,
+                filter: "[ResourceId] IS NOT NULL");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

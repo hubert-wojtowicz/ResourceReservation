@@ -1,6 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using ReservationApi.ApiContract;
+using ReservationApi.Application;
+using ReservationApi.Application.Repository;
 using ReservationApi.Infrastructure;
+using ReservationApi.Validations;
 
 namespace ReservationApi.Controllers;
 
@@ -12,23 +15,39 @@ namespace ReservationApi.Controllers;
 public class ReservationController : ControllerBase
 {
     private readonly ILogger<ReservationController> _logger;
+    private readonly IRepository<ReservationDbEntity> _repository;
+    private readonly IReservationApplicationService _reservationApplicationService;
 
     /// <summary>
     /// Initialize instance of object.
     /// </summary>
-    public ReservationController(ILogger<ReservationController> logger)
+    public ReservationController(ILogger<ReservationController> logger,
+        IRepository<ReservationDbEntity> repository, 
+        IReservationApplicationService reservationApplicationService)
     {
         _logger = logger;
+        _repository = repository;
+        _reservationApplicationService = reservationApplicationService;
     }
 
     /// <summary>
     /// Get list active resource reservations.
     /// </summary>
     /// <returns>Active resource reservations falling into filter category.</returns>
-    [HttpGet]
-    public Task<IEnumerable<Reservation>> Get(GetReservationRequest request)
+    [HttpGet("{reservationId}")]
+    public async Task<ActionResult<IEnumerable<ReservationDbEntity>>> Get([NotDefaultGuid] Guid reservationId)
     {
-        return Task.FromResult<IEnumerable<Reservation>>(null);
+        if (!ModelState.IsValid)
+        {
+            return BadRequest("Identifier must be non default");
+        }
+
+        return Ok(await _repository.Get(reservationId));
+    }
+
+    public async Task<ActionResult<IEnumerable<ReservationDbEntity>>> GetAll([FromQuery] GetReservationRequest request)
+    {
+        return Ok(await _repository.GetAll(request));
     }
 
     /// <summary>
@@ -37,19 +56,45 @@ public class ReservationController : ControllerBase
     /// <param name="request">Definition what have to be reserved.</param>
     /// <returns>Information about status of operation.</returns>
     [HttpPost]
-    public Task Create([FromBody] CreateReservationRequest request)
+    public async Task<ActionResult<OperationResult<ReservationDbEntity>>> Create([FromBody] CreateReservationRequest request)
     {
-        return Task.CompletedTask;
+        if (!ModelState.IsValid)
+        {
+            return BadRequest("All identifiers must be provided and non default value.");
+        }
+
+        var createResult = await _reservationApplicationService.CreateResevation(new CreateReservationDto
+        {
+            ReservationId = request.ReservationId,
+            ReservingPartyId = request.ReservingPartyId,
+            ResourceId = request.ResourceId
+        });
+
+        if(createResult.IsSuccess)
+            return Ok(createResult);
+
+        return BadRequest(createResult.Error);
     }
 
     /// <summary>
     /// Deletes reservations definition.
     /// </summary>
-    /// <param name="request">Definition what have to be unreserved.</param>
     /// <returns>Information about status of operation.</returns>
-    [HttpDelete]
-    public Task Delete([FromBody] DeleteReservationRequest request)
+    [HttpDelete("{reservationId}")]
+    public async Task<ActionResult> Delete([NotDefaultGuid] Guid reservationId)
     {
-        return Task.CompletedTask;
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        var reservation = await _repository.Get(reservationId);
+        if (reservation == null)
+        {
+            return NotFound();
+        }
+
+        await _repository.Delete(reservation);
+        return Ok();
     }
 }

@@ -4,29 +4,29 @@ using ReservationApi.Infrastructure.Entities;
 
 namespace ReservationApi.Application.Repository
 {
-    public class ResourceRepository : IRepository<Resource>
+    public class ResourceRepository : IRepository<ResourceDbEntity>
     {
         private readonly ReservationDbContext _ctx;
-        private DbSet<Resource> Colection => _ctx.Set<Resource>();
+        private DbSet<ResourceDbEntity> Colection => _ctx.Set<ResourceDbEntity>();
 
         public ResourceRepository(ReservationDbContext ctx)
         {
             _ctx = ctx;
         }
 
-        public async Task Add(Resource entity)
+        public async Task Add(ResourceDbEntity entity)
         {
             await Colection.AddAsync(entity);
             await _ctx.SaveChangesAsync();
         }
 
-        public async Task Delete(Resource entity)
+        public async Task Delete(ResourceDbEntity entity)
         {
             Colection.Remove(entity);
             await _ctx.SaveChangesAsync();
         }
 
-        public async Task<ICollection<Resource>> GetAll(IPaginable paginationParams)
+        public async Task<ICollection<ResourceDbEntity>> GetAll(IPaginable paginationParams)
         {
             return await Colection.AsNoTracking()
                 .OrderBy(x => x.ResourceId)
@@ -35,7 +35,7 @@ namespace ReservationApi.Application.Repository
                 .ToListAsync();
         }
 
-        public async Task<Resource?> Get(Guid id)
+        public async Task<ResourceDbEntity?> Get(Guid id)
         {
             return await Colection.AsNoTracking()
                 .FirstOrDefaultAsync(x => x.ResourceId == id);

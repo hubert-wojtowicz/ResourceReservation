@@ -1,12 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ReservationApi.Infrastructure.Entities;
+using System.Resources;
 
 namespace ReservationApi.Infrastructure
 {
     public class ReservationDbContext : DbContext
     {
-        public DbSet<Reservation> Reservations { get; set; }
-        public DbSet<Resource> Resources { get; set; }
+        public DbSet<ReservationDbEntity> Reservations { get; set; }
+        public DbSet<ResourceDbEntity> Resources { get; set; }
 
         public ReservationDbContext(DbContextOptions<ReservationDbContext> options)
             : base(options) { }
@@ -23,19 +24,30 @@ namespace ReservationApi.Infrastructure
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Reservation>()
+            modelBuilder.Entity<ReservationDbEntity>()
+                .ToTable("Reservations");
+
+            modelBuilder.Entity<ResourceDbEntity>()
+                .ToTable("Resources");
+
+            modelBuilder.Entity<ReservationDbEntity>()
                 .HasKey(e => e.ReservationId);
 
-            modelBuilder.Entity<Resource>()
+            modelBuilder.Entity<ResourceDbEntity>()
                 .HasKey(e => e.ResourceId);
 
-            modelBuilder.Entity<Reservation>()
-                .HasOne(r => r.Resource)
-                .WithOne(res => res.Reservation)
-                .HasForeignKey<Reservation>(r => r.ReservationId);
+            modelBuilder.Entity<ReservationDbEntity>()
+                .HasIndex(u => u.ResourceId)
+                .IsUnique();
+
+            modelBuilder.Entity<ResourceDbEntity>()
+                .HasOne(r => r.Reservation)
+                .WithOne(res => res.Resource)
+                .HasForeignKey<ReservationDbEntity>(res => res.ResourceId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             // do not create separate entity for simplicity 
-            modelBuilder.Entity<Resource>()
+            modelBuilder.Entity<ResourceDbEntity>()
                 .Property(e => e.Tags)
                 .HasConversion(
                     v => string.Join(',', v),

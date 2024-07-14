@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ReservationApi.Domain\ReservationApi.Domain.csproj" />
     <ProjectReference Include="..\ReservationApi.Infrastructure\ReservationApi.Infrastructure.csproj" />
   </ItemGroup>
 
